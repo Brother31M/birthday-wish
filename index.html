@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday!</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body {
+      background: linear-gradient(135deg, #ffeef2, #ffd6e0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+    .card-container {
+      background: #ffffff;
+      width: 100%;
+      max-width: 360px;
+      min-height: 520px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+    .step { display: none; width: 100%; flex-direction: column; align-items: center; }
+    .step.active { display: flex; }
+    h2 { color: #d63384; font-size: 22px; margin-bottom: 12px; }
+    p { color: #666; font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
+    .btn {
+      background: linear-gradient(45deg, #ff6b8b, #ff8e53);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(255, 107, 139, 0.4);
+    }
+    .dark-bg { background-color: #1a162b !important; color: #fff; }
+    .dark-bg h2 { color: #f8a5c2; }
+    .dark-bg p { color: #ccc; }
+    .cake-box {
+      font-size: 80px;
+      margin: 15px 0;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s;
+    }
+    .cake-box:active { transform: scale(0.95); }
+    .flip-card {
+      background-color: #fff0f3;
+      border: 1px dashed #ff8fa3;
+      border-radius: 16px;
+      padding: 20px;
+      margin: 10px 0;
+      width: 100%;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card-container" id="mainCard">
+    <!-- Step 1: Welcome -->
+    <div class="step active" id="step1">
+      <div style="font-size: 50px; margin-bottom: 10px;">💌</div>
+      <h2>Ready to open it?</h2>
+      <p>A little special note is waiting just for you!</p>
+      <button class="btn" onclick="nextStep(2)">Yes, Open!</button>
+    </div>
+
+    <!-- Step 2: Dark Room -->
+    <div class="step" id="step2">
+      <div style="font-size: 50px; margin-bottom: 10px;">🌙</div>
+      <h2>The room is dark...</h2>
+      <p>Let's brighten up the celebration!</p>
+      <button class="btn" onclick="turnOnLights()">Turn on the lights 💡</button>
+    </div>
+
+    <!-- Step 3: Decorate & Balloons -->
+    <div class="step" id="step3">
+      <div style="font-size: 50px; margin-bottom: 10px;">🎈✨</div>
+      <h2>Decoration Complete!</h2>
+      <p>Everything looks festive and bright!</p>
+      <button class="btn" onclick="nextStep(4)">Bring the Cake 🎂</button>
+    </div>
+
+    <!-- Step 4: Cake Cutting -->
+    <div class="step" id="step4">
+      <h2>Cake Cutting Time!</h2>
+      <div class="cake-box" id="cakeIcon" onclick="cutCake()">🎂</div>
+      <p id="cakeText">Click / Tap on the cake to cut it</p>
+      <button class="btn" id="cakeNextBtn" style="display: none;" onclick="nextStep(5)">Make a Wish 💫</button>
+    </div>
+
+    <!-- Step 5: Wishes Card -->
+    <div class="step" id="step5">
+      <h2>Birthday Messages</h2>
+      <div class="flip-card" onclick="this.innerHTML='💖 May your life be filled with happiness, peace, and endless smiles!'">
+        🎁 <strong>Tap to reveal secret wish</strong>
+      </div>
+      <button class="btn" style="margin-top: 15px;" onclick="nextStep(6)">Read Final Letter 📜</button>
+    </div>
+
+    <!-- Step 6: Final Letter -->
+    <div class="step" id="step6">
+      <h2>Dear Special One ❤️</h2>
+      <p>Happy Birthday! Wishing you lots of love, good health, and success ahead. May all your dreams come true!</p>
+      <button class="btn" onclick="location.reload()">Restart 🔄</button>
+    </div>
+  </div>
+
+  <script>
+    function nextStep(stepNum) {
+      document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+      const nextEl = document.getElementById('step' + stepNum);
+      if (nextEl) nextEl.classList.add('active');
+    }
+
+    function turnOnLights() {
+      const card = document.getElementById('mainCard');
+      card.classList.remove('dark-bg');
+      nextStep(3);
+    }
+
+    // Step 2-এর জন্য ডার্ক থিম
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new MutationObserver(() => {
+        const step2 = document.getElementById('step2');
+        const card = document.getElementById('mainCard');
+        if (step2.classList.contains('active')) {
+          card.classList.add('dark-bg');
+        }
+      });
+      observer.observe(document.getElementById('step2'), { attributes: true });
+    });
+
+    function cutCake() {
+      document.getElementById('cakeIcon').innerHTML = '🍰✨';
+      document.getElementById('cakeText').innerText = 'Cake cut! Now make your wish 💖';
+      document.getElementById('cakeNextBtn').style.display = 'inline-block';
+    }
+  </script>
+</body>
+</html>
